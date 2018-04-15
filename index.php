@@ -58,22 +58,12 @@
 				</li>
 				<li><strong>pen</strong>
 					<ul>
-						<li>penProfileId</li>
-					</ul>
-				</li>
-				<li><strong>penHtml</strong>
-					<ul>
-
-					</ul>
-				</li>
-				<li><strong>penCss</strong>
-					<ul>
-
-					</ul>
-				</li>
-				<li><strong>penJs</strong>
-					<ul>
-
+						<li>penId (primary key)</li>
+						<li>penProfileId (foreign key, references profile(profileId))</li>
+						<li>penName</li>
+						<li>penHtmlContent</li>
+						<li>penCssContent</li>
+						<li>penJsContent</li>
 					</ul>
 				</li>
 				<li><strong>penComments</strong>
