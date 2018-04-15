@@ -54,6 +54,8 @@
 						<li>profileName</li>
 						<li>profileEmail</li>
 						<li>profileAvatar</li>
+						<li>profileIsPro (checks for Pro membership)</li>
+						<!-- excluding things like 'collections' and 'posts' for project relevance -->
 					</ul>
 				</li>
 				<li><strong>pen</strong>
@@ -68,7 +70,10 @@
 				</li>
 				<li><strong>penComments</strong>
 					<ul>
-
+						<li>commentId (primary key)</li>
+						<li>commentFromProfileId (foreign key, references profile(profileId))</li>
+						<li>commentToPenId (foreign key, references pen(penId))</li>
+						<li>commentContent</li>
 					</ul>
 				</li>
 			</ul>
