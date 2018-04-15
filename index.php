@@ -22,8 +22,28 @@
 			</ul>
 		</div>
 		<hr>
-		<div id="userStoryContainer">
-			<h2>User Story</h2>
+		<div id="userStoriesContainer">
+			<p>As a registered user, Jack wants to post his HTML/CSS/JS code for others to see, in both raw and rendered format.</p>
+			<p>As a public user, I want to browse others' code and see it represented visually by the app.</p>
+			<p>As a registered user, I want to comment on a post.</p>
 		</div>
+		<hr>
+		<div id="useCaseContainer">
+			<h2>Use Case/Interaction Flow</h2>
+			<ul id="useCase">
+				<li><strong>Description:</strong>Posting a pen</li>
+				<li><strong>Persona:</strong>Jack Jackson</li>
+				<li><strong>Preconditions:</strong>Jack has registered his account and wishes to share his code with others.</li>
+				<li><strong>Postconditions:</strong>Jack's work now exists on codepen.io in the form of a searchable 'pen' that displays his code and also renders it in the browser.</li>
+			</ul>
+			<ol id="interactionFlow">
+				<li>Jack clicks the "Create New Pen" link.</li>
+				<li>The server sends the pen creation page to Jack.</li>
+				<li>Jack writes his HTML/CSS/JS code and clicks "Save".</li>
+				<li>The pen is stored in the database.</li>
+			</ol>
+		</div>
+		<hr>
+		<div id="conceptualModel"></div>
 	</body>
 </html>
