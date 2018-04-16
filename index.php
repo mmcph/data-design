@@ -52,10 +52,11 @@
 					<ul>
 						<li>profileId (primary key)</li>
 						<li>profileName</li>
+						<li>profileUsername</li>
 						<li>profileEmail</li>
 						<li>profileAvatar</li>
 						<li>profileIsPro (checks for Pro membership)</li>
-						<!-- excluding things like 'collections' and 'posts' for project relevance -->
+						<!-- excluding things like 'collections' / 'posts' / passwords etc. for project relevance -->
 					</ul>
 				</li>
 				<li><strong>pen</strong>
@@ -77,6 +78,9 @@
 					</ul>
 				</li>
 			</ul>
+		</div>
+		<div id="svgContainer">
+			<img src="codepen-erd.svg" alt="image of data structure ERD">
 		</div>
 	</body>
 </html>
