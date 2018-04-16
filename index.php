@@ -32,10 +32,10 @@
 		<div id="useCaseContainer">
 			<h2>Use Case/Interaction Flow</h2>
 			<ul id="useCase">
-				<li><strong>Description:</strong>Posting a pen</li>
-				<li><strong>Persona:</strong>Jack Jackson</li>
-				<li><strong>Preconditions:</strong>Jack has registered his account and wishes to share his code with others.</li>
-				<li><strong>Postconditions:</strong>Jack's work now exists on codepen.io in the form of a searchable 'pen' that displays his code and also renders it in the browser.</li>
+				<li><strong>Description:</strong>&nbsp;Posting a pen</li>
+				<li><strong>Persona:</strong>&nbsp;Jack Jackson</li>
+				<li><strong>Preconditions:</strong>&nbsp;Jack has registered his account and wishes to share his code with others.</li>
+				<li><strong>Postconditions:</strong>&nbsp;Jack's work now exists on codepen.io in the form of a searchable 'pen' that displays his code and also renders it in the browser.</li>
 			</ul>
 			<ol id="interactionFlow">
 				<li>Jack clicks the "Create New Pen" link.</li>
@@ -79,7 +79,9 @@
 				</li>
 			</ul>
 		</div>
+		<hr>
 		<div id="svgContainer">
+			<h2>Entity Relationship Diagram (ERD)</h2>
 			<img src="codepen-erd.svg" alt="image of data structure ERD">
 		</div>
 	</body>
