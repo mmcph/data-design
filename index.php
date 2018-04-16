@@ -74,6 +74,7 @@
 						<li>commentId (primary key)</li>
 						<li>commentFromProfileId (foreign key, references profile(profileId))</li>
 						<li>commentToPenId (foreign key, references pen(penId))</li>
+						<li>commentDateTime</li>
 						<li>commentContent</li>
 					</ul>
 				</li>
