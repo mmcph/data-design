@@ -9,7 +9,7 @@ CREATE TABLE profile (
 	profileActivationToken CHAR(32),
 	-- Avatars stored in file system, DB stores the FILEPATH
 	-- VARCHAR VALUE ???
-	profileAvatar VARCHAR(MAX),
+	profileAvatar VARCHAR(512),
 	profileEmail VARCHAR(128) NOT NULL,
 	-- profileIsPro acts as a bool to check Pro account status
 	profileIsPro TINYINT NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE comment (
 	commentProfileId BINARY(16) NOT NULL,
 	commentPenId BINARY(16) NOT NULL,
 	-- commentContent also stores filepath
-	commentContent VARCHAR(MAX),
+	commentContent VARCHAR(4096),
 	commentDateTime DATETIME(6),
 	-- commentId BINARY(16) NOT NULL, <-not needed ???
 	INDEX(commentProfileId),

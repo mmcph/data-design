@@ -9,17 +9,32 @@ class Profile implements \JsonSerializable {
 	 **/
 	private $profileId;
 	/**
-	 * id of the Profile that sent this Tweet; this is a foreign key
-	 * @var Uuid $tweetProfileId
+	 * id of the Profile that sent this Tweet
+	 * @var Uuid $profileActivationToken
 	 **/
-	private $tweetProfileId;
+	private $profileActivationToken;
 	/**
 	 * actual textual content of this Tweet
-	 * @var string $tweetContent
+	 * @var string $profileAvatar
 	 **/
-	private $tweetContent;
+	private $profileAvatar;
 	/**
 	 * date and time this Tweet was sent, in a PHP DateTime object
-	 * @var \DateTime $tweetDate
+	 * @var \DateTime profileEmail
 	 **/
-	private $tweetDate;
+	private profileEmail;
+	/**
+	 * date and time this Tweet was sent, in a PHP DateTime object
+	 * @var \DateTime profileIsPro
+	 **/
+	private profileIsPro;
+	/**
+	 * date and time this Tweet was sent, in a PHP DateTime object
+	 * @var \DateTime profileName
+	 **/
+	private profileName;
+	/**
+	 * date and time this Tweet was sent, in a PHP DateTime object
+	 * @var \DateTime profileUsername
+	 **/
+	private profileUsername;
