@@ -37,149 +37,186 @@ class Profile implements \JsonSerializable {
 	 * @var string profileUsername
 	 **/
 	private $profileUsername;
-}
+
 
 // CONSTRUCTOR
 
-/**
- * accessor method for profileId
- *
- * @return Uuid value of profileId
- **/
-public function getProfileId() : Uuid {
-	return($this->profileId);
-}
-
-/**
- * mutator method for profile id
- *
- * @param Uuid|string $newProfileId new value of profile id
- * @throws \RangeException if $newProfileId is not positive
- * @throws \TypeError if $newProfileId is not a uuid or string
- **/
-public function setProfileId($newProfileId) : void {
-	try {
-		$uuid = self::validateUuid($newProfileId);
-	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		$exceptionType = get_class($exception);
-		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	/**
+	 * accessor method for profileId
+	 *
+	 * @return Uuid value of profileId
+	 **/
+	public function getProfileId(): Uuid {
+		return ($this->profileId);
 	}
 
-	// convert and store the profile id
-	$this->profileId = $uuid;
-}
+	/**
+	 * mutator method for profile id
+	 *
+	 * @param Uuid|string $newProfileId new value of profile id
+	 * @throws \RangeException if $newProfileId is not positive
+	 * @throws \TypeError if $newProfileId is not a uuid or string
+	 **/
+	public function setProfileId($newProfileId): void {
+		try {
+			$uuid = self::validateUuid($newProfileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
 
-/**
- * accessor method for profileActivationToken
- *
- * @return string value of profileActivationToken
- **/
-public function getProfileActivationToken() : string {
-	return($this->profileActivationToken);
-}
-
-/**
- * mutator method for profileActivationToken
- *
- * @param string $newProfileActivationToken new value of profileActivationToken
- * @throws \TypeError if $newProfileActivationToken is not a string
- * @throws \RangeException if $newProfileActivationToken > 32chars OR empty string
- **/
-public function setProfileActivationToken($newProfileActivationToken) : void {
-	if(gettype($newProfileActivationToken) != string) {
-		throw(new \TypeError("Input is not a string"));
+		// convert and store the profile id
+		$this->profileId = $uuid;
 	}
 
-	if(0 > strlen($newProfileActivationToken) > 32 || empty($newProfileActivationToken) === true) {
-		throw(new \RangeException("Activation token empty or too large"));
+	/**
+	 * accessor method for profileActivationToken
+	 *
+	 * @return string value of profileActivationToken
+	 **/
+	public function getProfileActivationToken(): string {
+		return ($this->profileActivationToken);
 	}
 
+	/**
+	 * mutator method for profileActivationToken
+	 *
+	 * @param string $newProfileActivationToken new value of profileActivationToken
+	 * @throws \TypeError if $newProfileActivationToken is not a string
+	 * @throws \RangeException if $newProfileActivationToken > 32chars OR empty string
+	 **/
+	public function setProfileActivationToken($newProfileActivationToken): void {
+		if(is_string($newProfileActivationToken) === false) {
+			throw(new \TypeError("Input is not a string"));
+		}
+
+		if(0 > strlen($newProfileActivationToken) > 32 || empty($newProfileActivationToken) === true) {
+			throw(new \RangeException("Activation token empty or too large"));
+		}
+	// store new profileActivationToken
+	$this->profileActivationToken = $newProfileActivationToken;
+
 }
 
-/**
- * accessor method for profileAvatar
- *
- * @return string value of filepath to user's avatar
- **/
-public function getProfileAvatar() : string {
-	return($this->profileAvatar);
-}
-
-/**
- * mutator method for profileAvatar
- *
- * @param string $newProfileAvatar new value of profileAvatar
- * @throws \TypeError if input is not a string
- * @throws \RangeException if 0chars > $newProfileAvatar > 512chars
- **/
-public function setProfileAvatar($newProfileAvatar) : void {
-	if(gettype($newProfileAvatar) != string) {
-		throw(new \TypeError("Input is not a string"));
+	/**
+	 * accessor method for profileAvatar
+	 *
+	 * @return string value of filepath to user's avatar
+	 **/
+	public function getProfileAvatar(): string {
+		return ($this->profileAvatar);
 	}
 
-	if(0 > strlen($newProfileAvatar) > 512) {
-		throw(new \RangeException("Avatar filepath input too large"));
+	/**
+	 * mutator method for profileAvatar
+	 *
+	 * @param string $newProfileAvatar new value of profileAvatar
+	 * @throws \TypeError if input is not a string
+	 * @throws \RangeException if 0chars > $newProfileAvatar > 512chars
+	 **/
+	public function setProfileAvatar($newProfileAvatar): void {
+		if(is_string($newProfileAvatar) === false) {
+			throw(new \TypeError("Input is not a string"));
+		}
+
+		if(0 > strlen($newProfileAvatar) > 512) {
+			throw(new \RangeException("Avatar filepath input too large"));
+		}
+	// store new profileAvatar filepath
+	$this->profileAvatar = $newProfileAvatar;
+
+}
+
+	/**
+	 * accessor method for profileEmail
+	 *
+	 * @return string value of profileEmail
+	 **/
+	public function getProfileEmail(): string {
+		return ($this->profileEmail);
 	}
 
-}
+	/**
+	 * mutator method for profileEmail
+	 *
+	 * @param string $newProfileEmail new val for profileEmail
+	 * @throws \InvalidArgumentException if input is insecure
+	 * @throws \TypeError if $newProfileEmail is not a string
+	 * @throws \RangeException if $newProfileEmail > 128chars
+	 **/
+	public function setProfileEmail($newProfileEmail): void {
+		// verify the token is secure
+		$newProfileEmail = trim($newProfileEmail);
+		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileEmail) === true) {
+			throw(new \InvalidArgumentException("Email value is empty or insecure"));
+		}
 
-/**
- * accessor method for profileEmail
- *
- * @return string value of profileEmail
- **/
-public function getProfileEmail() : string {
-	return($this->profileEmail);
-}
+		if(gettype($newProfileEmail) != string) {
+			throw(new \TypeError("Email input is not a string"));
+		}
 
-/**
- * mutator method for profileEmail
- *
- * @param string $newProfileEmail new val for profileEmail
- * @throws \InvalidArgumentException if input is insecure
- * @throws \TypeError if $newProfileEmail is not a string
- * @throws \RangeException if $newProfileEmail > 128chars
- **/
-public function setProfileEmail($newProfileEmail) : void {
-	// verify the token is secure
-	$newProfileEmail = trim($newProfileEmail);
-	$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	if(empty($newProfileEmail) === true) {
-		throw(new \InvalidArgumentException("Email value is empty or insecure"));
+		if(strlen($newProfileEmail) > 128) {
+			throw(new \RangeException("Email input too large"))
+		}
+		// store new profileEmail
+		$this->profileEmail = $newProfileEmail;
 	}
 
-	if(gettype($newProfileEmail) != string) {
-		throw(new \TypeError("Email input is not a string"));
+	/**
+	 * accessor method for profileIsPro
+	 *
+	 * @return bool value of profileIsPro
+	 **/
+	public function getProfileIsPro(): bool {
+		return ($this->profileIsPro);
 	}
 
-	if(strlen($newProfileEmail) > 128) {
-		throw(new \RangeException("Email input too large"))
+	/**
+	 * mutator method for profileIsPro
+	 *
+	 * @param bool $newProfileIsPro new val for profileIsPro
+	 * @throws \TypeError if $newProfileIsPro !=== bool
+	 **/
+	public function setProfileIsPro($newProfileIsPro): void {
+		if(is_bool($newProfileIsPro) === false) {
+			throw(new \TypeError("profileIsPro value must be boolean"));
+		}
+		// store new profileIsPro
+		$this->profileIsPro = $newProfileIsPro;
 	}
-}
 
-/**
- * accessor method for profileIsPro
- *
- * @return bool value of profileIsPro
- **/
-public function getProfileIsPro() : bool {
-	return($this->profileIsPro);
-}
+	/**
+	 * accessor method for profileName
+	 *
+	 * @return string value of profileName
+	 **/
+	public function getProfileName(): string {
+		return ($this->profileName);
+	}
 
-/**
- * accessor method for profileName
- *
- * @return string value of profileName
- **/
-public function getProfileName() : string {
-	return($this->profileName);
-}
-
-/**
- * accessor method for profileUsername
- *
- * @return string value of profileUsername
- **/
-public function getProfileUsername() : string {
-	return($this->profileUsername);
+	/**
+	 * mutator method for profileName
+	 *
+	 * @param string $newProfileName new val for profileName
+	 * @throws \InvalidArgumentException if $newProfileName is insecure or empty
+	 * @throws \TypeError if $newProfileName !=== string
+	 * @throws \RangeException if $newProfileName > 32chars
+	 **/
+	public function setProfileName($newProfileName): void {
+		// verify the token is secure
+		$newProfileName = trim($newProfileName);
+		$newProfileName = filter_var($newProfileName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileName) === true) {
+			throw(new \InvalidArgumentException("profileName value is empty or insecure"));
+		}
+	}
+	/**
+	 * accessor method for profileUsername
+	 *
+	 * @return string value of profileUsername
+	 **/
+	public function getProfileUsername(): string {
+		return ($this->profileUsername);
+	}
 }
