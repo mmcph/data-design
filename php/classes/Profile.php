@@ -9,32 +9,61 @@ class Profile implements \JsonSerializable {
 	 **/
 	private $profileId;
 	/**
-	 * id of the Profile that sent this Tweet
-	 * @var Uuid $profileActivationToken
+	 * token that verifies user account activation
+	 * @var string $profileActivationToken
 	 **/
 	private $profileActivationToken;
 	/**
-	 * actual textual content of this Tweet
+	 * stores the filepath to the user's avatar image in the file system
 	 * @var string $profileAvatar
 	 **/
 	private $profileAvatar;
 	/**
-	 * date and time this Tweet was sent, in a PHP DateTime object
-	 * @var \DateTime profileEmail
+	 * user's email address
+	 * @var string $profileEmail
 	 **/
-	private profileEmail;
+	private $profileEmail;
 	/**
-	 * date and time this Tweet was sent, in a PHP DateTime object
-	 * @var \DateTime profileIsPro
+	 * bool to check for Pro status on account
+	 * @var int profileIsPro
 	 **/
-	private profileIsPro;
+	private $profileIsPro;
 	/**
-	 * date and time this Tweet was sent, in a PHP DateTime object
-	 * @var \DateTime profileName
+	 * the user's name
+	 * @var string profileName
 	 **/
-	private profileName;
+	private $profileName;
 	/**
-	 * date and time this Tweet was sent, in a PHP DateTime object
-	 * @var \DateTime profileUsername
+	 * the user's profile name
+	 * @var string profileUsername
 	 **/
-	private profileUsername;
+	private $profileUsername;
+}
+
+/**
+ * accessor method for profile id
+ *
+ * @return Uuid value of profile id
+ **/
+public function getProfileId() : Uuid {
+	return($this->profileId);
+}
+
+/**
+ * mutator method for profile id
+ *
+ * @param Uuid|string $newTweetId new value of tweet id
+ * @throws \RangeException if $newProfileId is not positive
+ * @throws \TypeError if $newProfileId is not a uuid or string
+ **/
+public function setProfileId( $newProfileId) : void {
+	try {
+		$uuid = self::validateUuid($newProfileId);
+	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	}
+
+	// convert and store the tweet id
+	$this->profileId = $uuid;
+}

@@ -1,4 +1,4 @@
-ALTER DATABASE data-design CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER DATABASE mmcpherson5 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS pen;
@@ -24,9 +24,9 @@ CREATE TABLE pen (
 	penId BINARY(16) NOT NULL,
 	penProfileId BINARY(16) NOT NULL,
 	-- pen code content attrs work like profileAvatar
-	penHtmlContent VARCHAR(MAX),
-	penCssContent VARCHAR(MAX),
-	penJsContent VARCHAR(MAX),
+	penHtmlContent VARCHAR(6553),
+	penCssContent VARCHAR(6553),
+	penJsContent VARCHAR(6553),
 	penName VARCHAR(64),
 	UNIQUE(penId),
 	INDEX(penProfileId),
