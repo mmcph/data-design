@@ -40,10 +40,12 @@ class Profile implements \JsonSerializable {
 	private $profileUsername;
 }
 
+// CONSTRUCTOR
+
 /**
- * accessor method for profile id
+ * accessor method for profileId
  *
- * @return Uuid value of profile id
+ * @return Uuid value of profileId
  **/
 public function getProfileId() : Uuid {
 	return($this->profileId);
@@ -52,7 +54,7 @@ public function getProfileId() : Uuid {
 /**
  * mutator method for profile id
  *
- * @param Uuid|string $newTweetId new value of tweet id
+ * @param Uuid|string $newProfileId new value of profile id
  * @throws \RangeException if $newProfileId is not positive
  * @throws \TypeError if $newProfileId is not a uuid or string
  **/
@@ -64,6 +66,60 @@ public function setProfileId( $newProfileId) : void {
 		throw(new $exceptionType($exception->getMessage(), 0, $exception));
 	}
 
-	// convert and store the tweet id
+	// convert and store the profile id
 	$this->profileId = $uuid;
+}
+
+/**
+ * accessor method for profileActivationToken
+ *
+ * @return string value of profileActivationToken
+ **/
+public function getProfileActivationToken() : string {
+	return($this->profileActivationToken);
+}
+
+/**
+ * accessor method for profileAvatar
+ *
+ * @return string value of filepath to user's avatar
+ **/
+public function getProfileAvatar() : string {
+	return($this->profileAvatar);
+}
+
+/**
+ * accessor method for profileEmail
+ *
+ * @return string value of profileEmail
+ **/
+public function getProfileEmail() : string {
+	return($this->profileEmail);
+}
+
+/**
+ * accessor method for profileIsPro
+ *
+ * @return bool value of profileIsPro
+ */
+public function getProfileIsPro() : bool {
+	return($this->profileIsPro);
+}
+
+/**
+ * accessor method for profileName
+ *
+ * @return string value of profileName
+ */
+public function getProfileName() : string {
+	return($this->profileName);
+}
+
+/**
+ * accessor method for profileUsername
+ *
+ * @return string value of profileUsername
+ */
+public function getProfileUsername() : string {
+	return($this->profileUsername);
 }
