@@ -90,7 +90,7 @@ class Profile implements \JsonSerializable {
 			throw(new \TypeError("Input is not a string"));
 		}
 
-		if(0 > strlen($newProfileActivationToken) > 32 || empty($newProfileActivationToken) === true) {
+		if(strlen($newProfileActivationToken) > 32 || empty($newProfileActivationToken) === true) {
 			throw(new \RangeException("Activation token empty or too large"));
 		}
 	// store new profileActivationToken
@@ -112,15 +112,15 @@ class Profile implements \JsonSerializable {
 	 *
 	 * @param string $newProfileAvatar new value of profileAvatar
 	 * @throws \TypeError if input is not a string
-	 * @throws \RangeException if 0chars > $newProfileAvatar > 512chars
+	 * @throws \RangeException if $newProfileAvatar > 512chars OR is empty string
 	 **/
 	public function setProfileAvatar($newProfileAvatar): void {
 		if(is_string($newProfileAvatar) === false) {
-			throw(new \TypeError("Input is not a string"));
+			throw(new \TypeError("Input must be a string"));
 		}
 
-		if(0 > strlen($newProfileAvatar) > 512) {
-			throw(new \RangeException("Avatar filepath input too large"));
+		if(strlen($newProfileAvatar) > 512 || empty($newProfileAvatar) === true) {
+			throw(new \RangeException("Avatar filepath input too large OR empty string"));
 		}
 	// store new profileAvatar filepath
 	$this->profileAvatar = $newProfileAvatar;
@@ -153,7 +153,7 @@ class Profile implements \JsonSerializable {
 		}
 
 		if(gettype($newProfileEmail) != string) {
-			throw(new \TypeError("Email input is not a string"));
+			throw(new \TypeError("Email input must be a string"));
 		}
 
 		if(strlen($newProfileEmail) > 128) {
@@ -180,7 +180,7 @@ class Profile implements \JsonSerializable {
 	 **/
 	public function setProfileIsPro($newProfileIsPro): void {
 		if(is_bool($newProfileIsPro) === false) {
-			throw(new \TypeError("profileIsPro value must be boolean"));
+			throw(new \TypeError("profileIsPro must be a boolean"));
 		}
 		// store new profileIsPro
 		$this->profileIsPro = $newProfileIsPro;
@@ -209,6 +209,9 @@ class Profile implements \JsonSerializable {
 		$newProfileName = filter_var($newProfileName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileName) === true) {
 			throw(new \InvalidArgumentException("profileName value is empty or insecure"));
+		}
+		if(is_string($newProfileName) === false) {
+			throw(new \TypeError("profileName must be a string"));
 		}
 	}
 	/**
