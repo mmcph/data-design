@@ -44,6 +44,7 @@ trait ValidateUuid {
 		return($uuid);
 	}
 }
+
 	/**
 	 * id for this Profile; this is the primary key
 	 * @var Uuid $profileId
@@ -125,7 +126,7 @@ public function __construct($newProfileId, string $newProfileActivationToken, st
 	}
 
 	/**
-	 * mutator method for profile id
+	 * mutator method for profileId
 	 *
 	 * @param Uuid|string $newProfileId new value of profile id
 	 * @throws \RangeException if $newProfileId is not positive
@@ -284,10 +285,18 @@ public function __construct($newProfileId, string $newProfileActivationToken, st
 		if(empty($newProfileName) === true) {
 			throw(new \InvalidArgumentException("profileName value is empty or insecure"));
 		}
+
 		if(is_string($newProfileName) === false) {
 			throw(new \TypeError("profileName must be a string"));
 		}
+
+		if(strlen($newProfileName) > 32) {
+			throw(new \RangeException("profileName input too large"));
+		}
+
+		$this->profileName = $newProfileName;
 	}
+
 	/**
 	 * accessor method for profileUsername
 	 *
@@ -295,5 +304,32 @@ public function __construct($newProfileId, string $newProfileActivationToken, st
 	 **/
 	public function getProfileUsername(): string {
 		return ($this->profileUsername);
+	}
+
+	/**
+	 * mutator method for profileUsername
+	 *
+	 * @param string $newProfileUsername new val for profile username
+	 * @throws \InvalidArgumentException if $newProfileUsername is insecure or empty
+	 * @throws \TypeError if $newProfileUsername !=== string
+	 * @throws \RangeException if $newProfileUsername > 32chars
+	 **/
+	public function setProfileUsername($newProfileUsername): void {
+		// verify the token is secure
+		$newProfileUsername = trim($newProfileUsername);
+		$newProfileUsername = filter_var($newProfileUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileUsername) === true) {
+			throw(new \InvalidArgumentException("profileUsername value is empty or insecure"));
+		}
+
+		if(gettype($newProfileUsername) != string) {
+			throw(new \TypeError("ProfileUsername must be a string"));
+		}
+
+		if(strlen($newProfileUsername) > 32) {
+			throw(new \RangeException("profileUsername input too large"));
+		}
+
+		$this->profileUsername = $newProfileUsername;
 	}
 }
