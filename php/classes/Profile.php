@@ -2,6 +2,48 @@
 
 class Profile implements \JsonSerializable {
 	use ValidateUuid;
+	use Ramsey\Uuid\Uuid;
+
+trait ValidateUuid {
+	/**
+	 * validates a uuid irrespective of format
+	 *
+	 * @param string|Uuid $newUuid uuid to validate
+	 * @return Uuid object with validated uuid
+	 * @throws \InvalidArgumentException if $newUuid is not a valid uuid
+	 * @throws \RangeException if $newUuid is not a valid uuid v4
+	 **/
+	private static function validateUuid($newUuid) : Uuid {
+		// verify a string uuid
+		if(gettype($newUuid) === "string") {
+			// 16 characters is binary data from mySQL - convert to string and fall to next if block
+			if(strlen($newUuid) === 16) {
+				$newUuid = bin2hex($newUuid);
+				$newUuid = substr($newUuid, 0, 8) . "-" . substr($newUuid, 8, 4) . "-" . substr($newUuid,12, 4) . "-" . substr($newUuid, 16, 4) . "-" . substr($newUuid, 20, 12);
+			}
+			// 36 characters is a human readable uuid
+			if(strlen($newUuid) === 36) {
+				if(Uuid::isValid($newUuid) === false) {
+					throw(new \InvalidArgumentException("invalid uuid"));
+				}
+				$uuid = Uuid::fromString($newUuid);
+			} else {
+				throw(new \InvalidArgumentException("invalid uuid"));
+			}
+		} else if(gettype($newUuid) === "object" && get_class($newUuid) === "Ramsey\\Uuid\\Uuid") {
+			// if the misquote id is already a valid UUID, press on
+			$uuid = $newUuid;
+		} else {
+			// throw out any other trash
+			throw(new \InvalidArgumentException("invalid uuid"));
+		}
+		// verify the uuid is uuid v4
+		if($uuid->getVersion() !== 4) {
+			throw(new \RangeException("uuid is incorrect version"));
+		}
+		return($uuid);
+	}
+}
 	/**
 	 * id for this Profile; this is the primary key
 	 * @var Uuid $profileId
@@ -39,7 +81,39 @@ class Profile implements \JsonSerializable {
 	private $profileUsername;
 
 
-// CONSTRUCTOR
+// Constructor
+/**
+ * constructor for Profile
+ *
+ * @param string|Uuid $newProfileId id of this profile or null if a new Tweet
+ * @param string $newProfileActivationToken
+ * @param string $newProfileAvatar filepath to avatar
+ * @param string $newProfileEmail user's email
+ * @param bool $newProfileIsPro checks pro status on account
+ * @param string $newProfileName user's name
+ * @param string $newProfileUsername user's displayed username
+ * @throws \InvalidArgumentException if data types are not valid
+ * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+ * @throws \TypeError if data types violate type hints
+ * @throws \Exception if some other exception occurs
+ * @Documentation https://php.net/manual/en/language.oop5.decon.php
+ **/
+public function __construct($newProfileId, string $newProfileActivationToken, string $newProfileAvatar, string $newProfileEmail, bool $newProfileIsPro, string $newProfileName, string $newProfileUsername) {
+	try {
+		$this->setProfileId($newProfileId);
+		$this->setProfileActivationToken($newProfileActivationToken);
+		$this->setProfileAvatar($newProfileAvatar);
+		$this->setProfileEmail($newProfileEmail);
+		$this->setProfileIsPro($newProfileIsPro);
+		$this->setProfileName($newProfileName);
+		$this->setProfileUsername($newProfileUsername);
+	}
+		//determine what exception type was thrown
+	catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	}
+}
 
 	/**
 	 * accessor method for profileId
