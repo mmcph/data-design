@@ -168,10 +168,10 @@ public function __construct($newProfileId, string $newProfileActivationToken, st
 		if(strlen($newProfileActivationToken) > 32 || empty($newProfileActivationToken) === true) {
 			throw(new \RangeException("Activation token empty or too large"));
 		}
-	// store new profileActivationToken
-	$this->profileActivationToken = $newProfileActivationToken;
+		// store new profileActivationToken
+		$this->profileActivationToken = $newProfileActivationToken;
 
-}
+	}
 
 	/**
 	 * accessor method for profileAvatar
@@ -197,10 +197,10 @@ public function __construct($newProfileId, string $newProfileActivationToken, st
 		if(strlen($newProfileAvatar) > 512 || empty($newProfileAvatar) === true) {
 			throw(new \RangeException("Avatar filepath input too large OR empty string"));
 		}
-	// store new profileAvatar filepath
-	$this->profileAvatar = $newProfileAvatar;
+		// store new profileAvatar filepath
+		$this->profileAvatar = $newProfileAvatar;
 
-}
+	}
 
 	/**
 	 * accessor method for profileEmail
