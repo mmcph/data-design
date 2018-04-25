@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS profile;
 
 CREATE TABLE profile (
 	profileId BINARY(16) NOT NULL,
-	profileActivationToken CHAR(32),
+	profileActivationToken VARCHAR(255),
 	-- Avatars stored in file system, DB stores the FILEPATH
 	-- VARCHAR VALUE ???
 	profileAvatar VARCHAR(512),

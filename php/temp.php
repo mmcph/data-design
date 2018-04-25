@@ -1,8 +1,7 @@
 <?php
 
-/** PROFILE
- *
- * inserts new profile into mySQL
+
+/** inserts new profile into mySQL
  *
  * @param \PDO $pdo PDO connection object
  * @throws \PDOException when mySQL related errors occur
@@ -67,7 +66,7 @@ $statement->execute($parameters);
 public function insert(\PDO $pdo) : void {
 
 // create query template
-$query = "INSERT INTO pen(penId, penProfileId, penName, penHtmlContent, penCssContent, penJsContent) VALUES(:penId, :penProfileId, :penName, :penHtmlContent, :penCssContent, :penJsContent)";
+$query = "INSERT INTO pen(penId, penProfileId, penCssContent, penHtmlContent, penJsContent, penName) VALUES (:penId, :penProfileId, :penCssContent, :penHtmlContent, :penJsContent, :penName)";
 $statement = $pdo->prepare($query);
 
 // bind the member variables to the placeholders in the template
