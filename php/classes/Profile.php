@@ -2,6 +2,9 @@
 
 namespace Edu\Cnm\DataDesign;
 
+require_once("autoload.php");
+require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
+
 use Ramsey\Uuid\Uuid;
 
 class Profile implements \JsonSerializable {
@@ -45,38 +48,38 @@ class Profile implements \JsonSerializable {
 
 
 // Constructor
-/**
- * constructor for Profile
- *
- * @param string|Uuid $newProfileId id of this profile or null if a new profile
- * @param string $newProfileActivationToken
- * @param string $newProfileAvatar file path to avatar
- * @param string $newProfileEmail user's email
- * @param bool $newProfileIsPro checks pro status on account
- * @param string $newProfileName user's name
- * @param string $newProfileUsername user's displayed username
- * @throws \InvalidArgumentException if data types are not valid
- * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
- * @throws \TypeError if data types violate type hints
- * @throws \Exception if some other exception occurs
- * @Documentation https://php.net/manual/en/language.oop5.decon.php
- **/
-public function __construct($newProfileId, string $newProfileActivationToken, string $newProfileAvatar, string $newProfileEmail, bool $newProfileIsPro, string $newProfileName, string $newProfileUsername) {
-	try {
-		$this->setProfileId($newProfileId);
-		$this->setProfileActivationToken($newProfileActivationToken);
-		$this->setProfileAvatar($newProfileAvatar);
-		$this->setProfileEmail($newProfileEmail);
-		$this->setProfileIsPro($newProfileIsPro);
-		$this->setProfileName($newProfileName);
-		$this->setProfileUsername($newProfileUsername);
+
+	/**
+	 * constructor for Profile
+	 *
+	 * @param string|Uuid $newProfileId id of this profile or null if a new profile
+	 * @param string $newProfileActivationToken
+	 * @param string $newProfileAvatar file path to avatar
+	 * @param string $newProfileEmail user's email
+	 * @param bool $newProfileIsPro checks pro status on account
+	 * @param string $newProfileName user's name
+	 * @param string $newProfileUsername user's displayed username
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
+	 **/
+	public function __construct($newProfileId, string $newProfileActivationToken, string $newProfileAvatar, string $newProfileEmail, bool $newProfileIsPro, string $newProfileName, string $newProfileUsername) {
+		try {
+			$this->setProfileId($newProfileId);
+			$this->setProfileActivationToken($newProfileActivationToken);
+			$this->setProfileAvatar($newProfileAvatar);
+			$this->setProfileEmail($newProfileEmail);
+			$this->setProfileIsPro($newProfileIsPro);
+			$this->setProfileName($newProfileName);
+			$this->setProfileUsername($newProfileUsername);
+		} //determine what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
 	}
-		//determine what exception type was thrown
-	catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		$exceptionType = get_class($exception);
-		throw(new $exceptionType($exception->getMessage(), 0, $exception));
-	}
-}
 
 	/**
 	 * accessor method for profileId
@@ -302,13 +305,13 @@ public function __construct($newProfileId, string $newProfileActivationToken, st
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 
-	public function insert(\PDO $pdo) : void {
+	public function insert(\PDO $pdo): void {
 
-	// create query template
+		// create query template
 		$query = "INSERT INTO profile(profileId, profileActivationToken, profileAvatar, profileEmail, profileIsPro, profileName, profileUsername) VALUES(:profileId, :profileActivationToken, :profileAvatar, :profileEmail, :profileIsPro, :profileName, :profileUsername)";
 		$statement = $pdo->prepare($query);
 
-	// bind the member variables to the placeholders in the template
+		// bind the member variables to the placeholders in the template
 		$parameters = ["profileId" => $this->profileID->getBytes(), "profileActivationToken" => $this->profileActivationToken, "profileAvatar" => $this->profileAvatar, "profileEmail" => $this->profileEmail, "profileIsPro" => $this->profileIsPro, "profileName" => $this->profileName, "profileUsername" => $this->profileUsername];
 		$statement->execute($parameters);
 	}
@@ -316,17 +319,17 @@ public function __construct($newProfileId, string $newProfileActivationToken, st
 	/** deletes this profile from mysql
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 *  @throws \PDOException when mySQL related errors occur
-	 *  @throws \TypeError if $pdo is not a PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 
-	public function delete(\PDO $pdo) : void {
+	public function delete(\PDO $pdo): void {
 
-	// create query template
+		// create query template
 		$query = "DELETE FROM profile WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 
-	// bind member vars to placeholder in template
+		// bind member vars to placeholder in template
 		$parameters = ["profileId" => $this->profileId->getBytes()];
 		$statement->execute($parameters);
 	}
@@ -338,9 +341,9 @@ public function __construct($newProfileId, string $newProfileActivationToken, st
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 
-	public function update(\PDO $pdo) : void {
+	public function update(\PDO $pdo): void {
 
-	// create query template
+		// create query template
 		$query = "UPDATE profile SET profileActivationToken = :profileActivationToken, profileAvatar = :profileAvatar, profileEmail = :profileEmail, profileIsPro = :profileIsPro, profileName = :profileName, profileUsername = :profileUsername WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 
@@ -353,11 +356,11 @@ public function __construct($newProfileId, string $newProfileActivationToken, st
 	 *
 	 * @return array resulting state variables to serialize
 	 **/
-	public function jsonSerialize() : array {
+	public function jsonSerialize(): array {
 		$fields = get_object_vars($this);
 
 		$fields["profileId"] = $this->profileId->toString();
-		return($fields);
+		return ($fields);
 	}
 
 }
