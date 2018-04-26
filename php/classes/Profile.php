@@ -1,49 +1,11 @@
 <?php
 
+namespace Edu\Cnm\DataDesign;
+
+use Ramsey\Uuid\Uuid;
+
 class Profile implements \JsonSerializable {
 	use ValidateUuid;
-	use Ramsey\Uuid\Uuid;
-
-trait ValidateUuid {
-	/**
-	 * validates a uuid irrespective of format
-	 *
-	 * @param string|Uuid $newUuid uuid to validate
-	 * @return Uuid object with validated uuid
-	 * @throws \InvalidArgumentException if $newUuid is not a valid uuid
-	 * @throws \RangeException if $newUuid is not a valid uuid v4
-	 **/
-	private static function validateUuid($newUuid) : Uuid {
-		// verify a string uuid
-		if(gettype($newUuid) === "string") {
-			// 16 characters is binary data from mySQL - convert to string and fall to next if block
-			if(strlen($newUuid) === 16) {
-				$newUuid = bin2hex($newUuid);
-				$newUuid = substr($newUuid, 0, 8) . "-" . substr($newUuid, 8, 4) . "-" . substr($newUuid,12, 4) . "-" . substr($newUuid, 16, 4) . "-" . substr($newUuid, 20, 12);
-			}
-			// 36 characters is a human readable uuid
-			if(strlen($newUuid) === 36) {
-				if(Uuid::isValid($newUuid) === false) {
-					throw(new \InvalidArgumentException("invalid uuid"));
-				}
-				$uuid = Uuid::fromString($newUuid);
-			} else {
-				throw(new \InvalidArgumentException("invalid uuid"));
-			}
-		} else if(gettype($newUuid) === "object" && get_class($newUuid) === "Ramsey\\Uuid\\Uuid") {
-			// if the misquote id is already a valid UUID, press on
-			$uuid = $newUuid;
-		} else {
-			// throw out any other trash
-			throw(new \InvalidArgumentException("invalid uuid"));
-		}
-		// verify the uuid is uuid v4
-		if($uuid->getVersion() !== 4) {
-			throw(new \RangeException("uuid is incorrect version"));
-		}
-		return($uuid);
-	}
-}
 
 	/**
 	 * id for this Profile; this is the primary key
@@ -86,9 +48,9 @@ trait ValidateUuid {
 /**
  * constructor for Profile
  *
- * @param string|Uuid $newProfileId id of this profile or null if a new Tweet
+ * @param string|Uuid $newProfileId id of this profile or null if a new profile
  * @param string $newProfileActivationToken
- * @param string $newProfileAvatar filepath to avatar
+ * @param string $newProfileAvatar file path to avatar
  * @param string $newProfileEmail user's email
  * @param bool $newProfileIsPro checks pro status on account
  * @param string $newProfileName user's name
@@ -195,7 +157,7 @@ public function __construct($newProfileId, string $newProfileActivationToken, st
 		}
 
 		if(strlen($newProfileAvatar) > 512 || empty($newProfileAvatar) === true) {
-			throw(new \RangeException("Avatar filepath input too large OR empty string"));
+			throw(new \RangeException("Avatar file path input too large OR empty string"));
 		}
 		// store new profileAvatar filepath
 		$this->profileAvatar = $newProfileAvatar;
@@ -227,12 +189,12 @@ public function __construct($newProfileId, string $newProfileActivationToken, st
 			throw(new \InvalidArgumentException("Email value is empty or insecure"));
 		}
 
-		if(gettype($newProfileEmail) != string) {
+		if(is_string($newProfileEmail) === false) {
 			throw(new \TypeError("Email input must be a string"));
 		}
 
 		if(strlen($newProfileEmail) > 128) {
-			throw(new \RangeException("Email input too large"))
+			throw(new \RangeException("Email input too large"));
 		}
 		// store new profileEmail
 		$this->profileEmail = $newProfileEmail;
@@ -384,6 +346,18 @@ public function __construct($newProfileId, string $newProfileActivationToken, st
 
 		$parameters = ["profileId" => $this->profileId->getBytes(), "profileActivationToken" => $this->profileActivationToken, "profileAvatar" => $this->profileAvatar, "profileEmail" => $this->profileEmail, "profileIsPro" => $this->profileIsPro, "profileName" => $this->profileName, "profileUsername" => $this->profileUsername];
 		$statement->execute($parameters);
+	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() : array {
+		$fields = get_object_vars($this);
+
+		$fields["profileId"] = $this->profileId->toString();
+		return($fields);
 	}
 
 }
